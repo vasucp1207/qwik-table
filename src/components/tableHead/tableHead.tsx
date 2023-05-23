@@ -1,22 +1,29 @@
-import { component$, useStylesScoped$ } from '@builder.io/qwik';
-import '../../global.css';
+import { Signal, component$, useStylesScoped$ } from '@builder.io/qwik';
+import { SortButton } from '../SortButton';
 
 interface HeaderProps {
-  headers: [];
+  header: {
+    key: string,
+    label: string
+  }[],
+  sortOrder: Signal<string>,
+  sortKey: Signal<string>
 }
 
 export const TableHead = component$((props: HeaderProps) => {
   useStylesScoped$(AppCSS);
   return (
-    <thead class='head-cont'>
+    <thead>
       <tr>
-        {props.headers.map((header) => {
+        {props.header.map((cell) => {
           return (
-            <td
-              class='cell'
-              key={header.key}
-            >
-              {header.label}
+            <td key={cell.key}>
+              {cell.label}
+              <SortButton
+                cellKey={cell.key}
+                sortOrder={props.sortOrder}
+                sortKey={props.sortKey}
+              />
             </td>
           )
         })}
@@ -26,18 +33,8 @@ export const TableHead = component$((props: HeaderProps) => {
 });
 
 export const AppCSS = `
-.head-cont {
-  display: flex;
-  border: 1px solid black;
-  width: 100%;
-  padding: 3px;
-  justify-content: space-between;
-}
-
-.cell {
-  width: 100%;
-  font-weight: 500;
-  font-size: 17px;
-  color: red;
-}
+  td {
+    position: relative;
+    color: #64758b;
+  }
 `;

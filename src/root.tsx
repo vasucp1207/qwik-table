@@ -1,5 +1,6 @@
-import { QwikTable } from './components/qwikTable/QwikTable';
-import tableData from './data.json';
+import { Table } from './components/table/Table';
+import './global.css';
+import data from './data.json';
 
 export default () => {
   const headers = [
@@ -18,7 +19,7 @@ export default () => {
       </head>
       <body>
 
-      <QwikTable tableData={tableData} headers={headers} />
+      <Table header={headers} data={data} />
 
       </body>
     </>

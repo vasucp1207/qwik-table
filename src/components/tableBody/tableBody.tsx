@@ -1,52 +1,47 @@
-import { component$, useStylesScoped$ } from '@builder.io/qwik';
-import '../../global.css';
+import { Signal, component$, useStylesScoped$ } from '@builder.io/qwik';
 
-interface tableProps {
-  tableData: [];
+interface bodyProps {
+  data: {
+    id: number,
+    first_name: string,
+    last_name: string,
+    email: string, gender:
+    string,
+    ip_address: string
+  }[] | [],
+  pageNo: Signal<number>,
+  postPerPage: Signal<number>
 }
 
-export const TableBody = component$((props: tableProps) => {
+export const TableBody = component$((props: bodyProps) => {
   useStylesScoped$(AppCSS);
-  return (
-    <div class='table-cont'>
-      {props.tableData.map((data) => {
-        return (
-          <div class='table-data' key={data.id}>
-            <div class='cell'>{data.id}</div>
-            <div class='cell'>{data.first_name}</div>
-            <div class='cell'>{data.last_name}</div>
-            <div class='cell'>{data.email}</div>
-            <div class='cell'>{data.gender}</div>
-            <div class='cell'>{data.ip_address}</div>
-          </div>
 
-        )
+  const firstPost = props.pageNo.value * props.postPerPage.value;
+  const lastPost = firstPost + props.postPerPage.value;
+  const currentPosts = props.data.slice(firstPost, lastPost);
+
+  return (
+    <tbody>
+      {currentPosts.map((person) => {
+        return (
+          <tr key={person.id}>
+            <td>{person.id}</td>
+            <td>{person.first_name}</td>
+            <td>{person.last_name}</td>
+            <td>{person.email}</td>
+            <td>{person.gender}</td>
+            <td>{person.ip_address}</td>
+          </tr>
+        );
       })}
-    </div>
+    </tbody>
   );
 });
 
 export const AppCSS = `
-.table-cont {
-  display: flex;
-  border: 1px solid black;
-  width: 100%;
-  padding: 3px;
-  justify-content: space-between;
-  flex-direction: column;
-}
-
-.table-data {
-  display: flex;
-  border: 1px solid black;
-}
-
-.cell {
-  width: 100%;
-  padding: 20px 15px;
-  text-align: left;
-  font-weight: 500;
-  font-size: 17px;
-  color: black;
-}
+  tbody {
+    color: #0f172a;
+    font-size: 15px;
+    letter-spacing: 0.3px;
+  }
 `;
