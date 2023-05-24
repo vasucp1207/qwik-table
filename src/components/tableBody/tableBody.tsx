@@ -1,4 +1,4 @@
-import { Signal, component$, useStylesScoped$ } from '@builder.io/qwik';
+import { Signal, component$, useComputed$, useStylesScoped$, useVisibleTask$ } from '@builder.io/qwik';
 
 interface bodyProps {
   data: {
@@ -16,13 +16,15 @@ interface bodyProps {
 export const TableBody = component$((props: bodyProps) => {
   useStylesScoped$(AppCSS);
 
-  const firstPost = props.pageNo.value * props.postPerPage.value;
-  const lastPost = firstPost + props.postPerPage.value;
-  const currentPosts = props.data.slice(firstPost, lastPost);
+  const computedPosts = useComputed$(() => {
+    return props.data.slice((props.pageNo.value * props.postPerPage.value),
+      ((props.pageNo.value * props.postPerPage.value)
+        + parseInt(props.postPerPage.value)))
+  })
 
   return (
     <tbody>
-      {currentPosts.map((person) => {
+      {computedPosts.value.map((person) => {
         return (
           <tr key={person.id}>
             <td>{person.id}</td>

@@ -37,6 +37,8 @@ export const Table = component$((props: tableProps) => {
   useVisibleTask$(({ track }) => {
     track(() => sortOrder.value)
     track(() => sortKey.value)
+    track(() => pageNo.value)
+    track(() => postPerPage.value)
     sortedData().then(res => finalData.items = res);
   })
 

@@ -1,4 +1,4 @@
-import { Signal, component$, useStylesScoped$, $ } from '@builder.io/qwik';
+import { Signal, component$, useStylesScoped$, $, useComputed$ } from '@builder.io/qwik';
 
 interface pageProps {
   pageNo: Signal<number>,
@@ -9,14 +9,16 @@ interface pageProps {
 export const Pagination = component$((props: pageProps) => {
   useStylesScoped$(AppCSS);
 
-  const totalPage = (props.totalPosts / props.postPerPage.value) - 1;
+  const totalPage = useComputed$(() => {
+    return Math.ceil((props.totalPosts / props.postPerPage.value)) - 1;
+  });
 
   const changePosts = $((e: any) => {
-    props.postPerPage.value = e.target.value;
+    props.postPerPage.value = e.target.value as number;
   })
 
   const changePageNo = $((e: any) => {
-    props.pageNo.value = e.target.value;
+    props.pageNo.value = e.target.value as number;
   })
 
   const decPage = $(() => {
@@ -24,7 +26,7 @@ export const Pagination = component$((props: pageProps) => {
   })
 
   const incPage = $(() => {
-    if (props.pageNo.value < totalPage) props.pageNo.value++;
+    if (props.pageNo.value < totalPage.value) props.pageNo.value++;
   })
 
   const setFirstPage = $(() => {
@@ -32,7 +34,7 @@ export const Pagination = component$((props: pageProps) => {
   })
 
   const setLastPage = $(() => {
-    if(props.pageNo.value !== totalPage) props.pageNo.value = totalPage;
+    if(props.pageNo.value !== totalPage.value) props.pageNo.value = totalPage.value;
   })
 
   return (
@@ -50,7 +52,7 @@ export const Pagination = component$((props: pageProps) => {
       </div>
 
       <div>
-        <div class='select-page'>Page <input onInput$={changePageNo} value={props.pageNo.value} type='number' min={0} max={totalPage} /> of {totalPage}</div>
+        <div class='select-page'>Page <input onInput$={changePageNo} value={props.pageNo.value} type='number' min={0} max={totalPage.value} /> of {totalPage.value}</div>
       </div>
 
       <div class='btn-cont'>
