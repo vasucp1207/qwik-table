@@ -3,56 +3,85 @@ import { TableHead } from '../tableHead/TableHead';
 import { TableBody } from '../tableBody/TableBody';
 import { Pagination } from '../Pagination';
 import { sortData } from './sortData';
+import { Search } from '../Search';
+import { searchData } from './searchedData';
 
 interface tableProps {
-  header: {
-    key: string,
-    label: string
-  }[],
-  data: {
-    id: number,
-    first_name: string,
-    last_name: string,
-    email: string, gender:
-    string,
-    ip_address: string
-  }[]
+  header: any,
+  data: any
 }
 
 export const Table = component$((props: tableProps) => {
   useStylesScoped$(AppCSS);
 
   const sortOrder = useSignal<string>('asc');
-  const sortKey = useSignal<string>('id');
+  const sortKey = useSignal<string>('player_name');
   const pageNo = useSignal<number>(0);
   const postPerPage = useSignal<number>(10);
-  const totalPosts = props.data.length;
+  const totalPosts = useSignal<number>(props.data.length);
+  const searchBy = useSignal<string>('player_name');
+  const searchInp = useSignal<string>('');
+  const prevSearch = useSignal<boolean>(false);
 
   const finalData = useStore({
     items: []
   });
 
-  const sortedData = $(() => sortData({ data: props.data, tableData: finalData.items, sortKey: sortKey, reverse: sortOrder.value === "dsc" ? true : false }))
+  const sortedData = $(() => sortData({
+    data: props.data,
+    tableData: finalData.items,
+    pageNo: pageNo,
+    sortKey: sortKey,
+    sortOrder: sortOrder,
+    totalPosts: totalPosts,
+    searchBy: searchBy,
+    searchInp: searchInp,
+    prevSearch: prevSearch
+  }))
+
+  const searchedData = $(() => searchData({
+    data: props.data,
+    tableData: finalData.items,
+    pageNo: pageNo,
+    sortKey: sortKey,
+    sortOrder: sortOrder,
+    totalPosts: totalPosts,
+    searchBy: searchBy,
+    searchInp: searchInp,
+    prevSearch: prevSearch
+  }))
 
   useVisibleTask$(({ track }) => {
     track(() => sortOrder.value)
     track(() => sortKey.value)
     track(() => pageNo.value)
     track(() => postPerPage.value)
-    sortedData().then(res => finalData.items = res);
+    track(() => searchBy.value)
+    track(() => searchInp.value)
+    track(() => postPerPage.value)
+    track(() => totalPosts.value)
+    track(() => prevSearch.value)
+
+    if(searchInp.value === '')
+      sortedData().then(res => finalData.items = res);
+    else
+      searchedData().then(res => finalData.items = res);
   })
-
-
 
   return (
     <div class='table-cont'>
-      <div class='table-header'>
-        <div class='header-title'>
-          Qwik Table
+      <div class='table-top'>
+        <div class='table-header'>
+          <div class='header-title'>
+            Champions League
+          </div>
+          <div>
+            <img width={100} height={100} alt='leauge-logo' src='https://2.bp.blogspot.com/-zgas3qhn4dw/WqCyRRJLbNI/AAAAAAAAJHA/b3ttmTNl4IsSf4e27VZA7aR2wCFdY_NrQCLcBGAs/s1600/League%2BChampion.jpg' />
+          </div>
         </div>
-        <div>
-          <svg viewBox="-25 0 100 53" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Qwik Logo" width="100" height="100" class="qwik-logo" key="g0_0"><path d="M40.973 52.5351L32.0861 43.6985L31.9503 43.7179V43.621L13.0511 24.9595L17.708 20.4637L14.9721 4.76715L1.99103 20.8513C-0.220992 23.0798 -0.628467 26.7036 0.962635 29.3778L9.07337 42.8265C10.3152 44.9 12.566 46.1402 14.9915 46.1208L19.0081 46.082L40.973 52.5351Z" fill="#18B6F6"></path><path d="M45.8232 20.5411L44.038 17.2468L43.1066 15.5609L42.738 14.902L42.6992 14.9408L37.8094 6.47238C36.587 4.34075 34.2974 3.02301 31.8137 3.04239L27.5255 3.15865L14.7384 3.19741C12.313 3.21679 10.101 4.49577 8.87853 6.56927L1.09766 21.9945L15.0101 4.72831L33.2496 24.7656L30.0091 28.0406L31.9495 43.7178L31.9689 43.679V43.7178H31.9301L31.9689 43.7565L33.4824 45.2293L40.8364 52.4187C41.1469 52.7094 41.6514 52.3606 41.4379 51.9924L36.8975 43.0589L44.8142 28.4282L45.0664 28.1375C45.1634 28.0212 45.2604 27.905 45.3381 27.7887C46.8904 25.6764 47.1038 22.8472 45.8232 20.5411Z" fill="#AC7EF4"></path><path d="M33.3076 24.6882L15.0099 4.74774L17.61 20.3668L12.9531 24.882L31.9105 43.6985L30.203 28.0794L33.3076 24.6882Z" fill="white"></path></svg>
-        </div>
+
+        <Search searchBy={searchBy} searchInp={searchInp} />
+
       </div>
       <table>
         <TableHead header={props.header} sortOrder={sortOrder} sortKey={sortKey} />
@@ -67,9 +96,19 @@ export const AppCSS = `
   .table-header {
     display: flex;
     align-items: center;
+    height: 120px;
+  }
+  img {
+    object-fit: cover;
+    margin-left: 20px;
+  }
+  .table-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
   .header-title {
-    font-size: 30px;
+    font-size: 40px;
     font-weight: bold;
   }
   .table-cont {

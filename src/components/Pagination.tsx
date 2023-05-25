@@ -3,14 +3,14 @@ import { Signal, component$, useStylesScoped$, $, useComputed$ } from '@builder.
 interface pageProps {
   pageNo: Signal<number>,
   postPerPage: Signal<number>,
-  totalPosts: number
+  totalPosts: Signal<number>
 }
 
 export const Pagination = component$((props: pageProps) => {
   useStylesScoped$(AppCSS);
 
   const totalPage = useComputed$(() => {
-    return Math.ceil((props.totalPosts / props.postPerPage.value)) - 1;
+    return Math.ceil((props.totalPosts.value / props.postPerPage.value)) - 1;
   });
 
   const changePosts = $((e: any) => {
@@ -65,7 +65,7 @@ export const Pagination = component$((props: pageProps) => {
         <button onClick$={incPage}>
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><polyline points="9 18 15 12 9 6"></polyline></svg>
         </button>
-        <button disabled={props.pageNo.value === totalPage} onClick$={setLastPage}>
+        <button disabled={props.pageNo.value === totalPage.value} onClick$={setLastPage}>
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
         </button>
       </div>

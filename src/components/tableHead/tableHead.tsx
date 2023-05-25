@@ -2,10 +2,7 @@ import { Signal, component$, useStylesScoped$ } from '@builder.io/qwik';
 import { SortButton } from '../SortButton';
 
 interface HeaderProps {
-  header: {
-    key: string,
-    label: string
-  }[],
+  header: any
   sortOrder: Signal<string>,
   sortKey: Signal<string>
 }
@@ -15,12 +12,12 @@ export const TableHead = component$((props: HeaderProps) => {
   return (
     <thead>
       <tr>
-        {props.header.map((cell) => {
+        {props.header.map((cell, i) => {
           return (
-            <td key={cell.key}>
-              {cell.label}
+            <td key={i}>
+              {cell[Object.keys(cell)[1]]}
               <SortButton
-                cellKey={cell.key}
+                cellKey={cell[Object.keys(cell)[0]]}
                 sortOrder={props.sortOrder}
                 sortKey={props.sortKey}
               />
