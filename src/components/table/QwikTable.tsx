@@ -1,11 +1,10 @@
-import { component$, useStylesScoped$, useSignal, useStore, $, useVisibleTask$ } from '@builder.io/qwik';
+import { component$, useStylesScoped$, useSignal, useStore, $, useVisibleTask$, useStyles$ } from '@builder.io/qwik';
 import { TableHead } from '../tableHead/TableHead';
 import { TableBody } from '../tableBody/TableBody';
 import { Pagination } from '../Pagination';
 import { sortData } from '../../utils/sortData';
 import { searchData } from '../../utils/searchedData';
 import { Header } from '../header/Header';
-import '../../global.css';
 
 interface tableProps {
   header: {
@@ -20,6 +19,19 @@ interface tableProps {
 }
 
 export const QwikTable = component$((props: tableProps) => {
+  useStyles$(`
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    td {
+      padding: 1rem;
+      border: 1px solid #e2e8f0;
+    }
+    tr:hover {
+      background: #f8f9fb;
+    }`
+  );
   useStylesScoped$(AppCSS);
 
   const sortOrder = useSignal<string>('asc');
