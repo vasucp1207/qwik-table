@@ -1,47 +1,39 @@
-# Qwik Library ⚡️
+# Qwik Table
 
-- [Qwik Docs](https://qwik.builder.io/)
-- [Discord](https://qwik.builder.io/chat)
-- [Qwik on GitHub](https://github.com/BuilderIO/qwik)
-- [@QwikDev](https://twitter.com/QwikDev)
-- [Vite](https://vitejs.dev/)
-- [Partytown](https://partytown.builder.io/)
-- [Mitosis](https://github.com/BuilderIO/mitosis)
-- [Builder.io](https://www.builder.io/)
+## 📦Install
+``npm i qwik-table``
 
----
+## 🦄Usage
+Simply import **QwikTable** from the package.
 
-## Project Structure
+```ts
+import { component$ } from '@builder.io/qwik';
+import data from '../data.json';
+import { QwikTable } from 'qwik-table';
 
-Inside your project, you'll see the following directories and files:
+export default component$(() => {
+  const headers = [
+    { key: "player_name", label: "Player" },
+    { key: "club", label: "Club" },
+    { key: "position", label: "Position" },
+    { key: "minutes_played", label: "Min Played" },
+    { key: "match_played", label: "Matches" },
+    { key: "goals", label: "Goals" },
+    { key: "assists", label: "Assists" },
+    { key: "distance_covered", label: "Distance Covered" },
+  ];
 
+  return (
+    <div>
+      <QwikTable 
+        header={headers} 
+        data={data}
+        title='Champions League'
+        headerImg='/league.png'
+      />
+    </div>
+  );
+});
 ```
-├── public/
-│   └── ...
-└── src/
-    ├── components/
-    │   └── ...
-    └── index.ts
-```
 
-- `src/components`: Recommended directory for components.
-
-- `index.ts`: The entry point of your component library, make sure all the public components are exported from this file.
-
-## Development
-
-Development mode uses [Vite's development server](https://vitejs.dev/). For Qwik during development, the `dev` command will also server-side render (SSR) the output. The client-side development modules are loaded by the browser.
-
-```
-npm run dev
-```
-
-> Note: during dev mode, Vite will request many JS files, which does not represent a Qwik production build.
-
-## Production
-
-The production build should generate the production build of your component library in (./lib) and the typescript type definitions in (./lib-types).
-
-```
-npm run build
-```
+See the live demo.

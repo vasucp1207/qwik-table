@@ -1,6 +1,6 @@
 {
   "name": "qwik-table",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Create a reusable Qwik component library",
   "main": "./lib/index.qwik.mjs",
   "qwik": "./lib/index.qwik.mjs",
