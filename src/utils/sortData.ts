@@ -1,35 +1,27 @@
 import { Signal } from "@builder.io/qwik";
 
-type dataProp = {
-  id: number,
-  first_name: string,
-  last_name: string,
-  email: string,
-  gender: string,
-  ip_address: string
-}
-
 export function sortData({
   data,
   tableData,
-  pageNo,
   sortKey,
   sortOrder,
   totalPosts,
-  searchBy,
-  searchInp,
-  prevSearch
+  prevSearch,
+  searchBy
 }: {
-  data: dataProp[];
-  tableData: dataProp[] | [];
-  pageNo: Signal<number>;
+  data: {
+    [key: string]: string | number | null | undefined
+  }[];
+  tableData: {
+    [key: string]: string | number | null | undefined
+  }[];
   sortKey: Signal<string>;
   sortOrder: Signal<string>;
   totalPosts: Signal<number>;
-  searchBy: Signal<string>;
-  searchInp: Signal<string>;
   prevSearch: Signal<boolean>;
+  searchBy: Signal<string>;
 }) {
+  const initialSearchKey = searchBy.value;
   if (!sortKey.value) return tableData;
 
   if (tableData.length === 0) tableData = data;
@@ -38,7 +30,7 @@ export function sortData({
   if(prevSearch.value) {
     prevSearch.value = false;
     tableData = data;
-    sortKey.value = 'id';
+    sortKey.value = initialSearchKey;
     sortOrder.value = 'asc';
   }
   const sortedData = tableData.sort((a: any, b: any) => {

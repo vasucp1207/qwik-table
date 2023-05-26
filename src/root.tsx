@@ -1,5 +1,4 @@
-import { Table } from './components/table/Table';
-import './global.css';
+import { QwikTable } from './components/table/QwikTable';
 import data from './data.json';
 
 export default () => {
@@ -21,7 +20,12 @@ export default () => {
       </head>
       <body>
 
-      <Table header={headers} data={data} />
+        <QwikTable 
+          header={headers} 
+          data={data}
+          title='Champions League'
+          headerImg='https://2.bp.blogspot.com/-zgas3qhn4dw/WqCyRRJLbNI/AAAAAAAAJHA/b3ttmTNl4IsSf4e27VZA7aR2wCFdY_NrQCLcBGAs/s1600/League%2BChampion.jpg'
+        />
 
       </body>
     </>

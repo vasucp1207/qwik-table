@@ -1,9 +1,16 @@
-import { Signal, component$, useComputed$, useStylesScoped$, $ } from '@builder.io/qwik';
+import { Signal, component$, useComputed$, useStylesScoped$ } from '@builder.io/qwik';
+import { isImage } from '../../utils/imageBool';
 
 interface bodyProps {
-  data: any,
+  data: {
+    [key: string]: string | number | null | undefined
+  }[],
   pageNo: Signal<number>,
   postPerPage: Signal<number>
+}
+
+type cellType = {
+  [key: string]: string | number | null | undefined;
 }
 
 export const TableBody = component$((props: bodyProps) => {
@@ -12,26 +19,27 @@ export const TableBody = component$((props: bodyProps) => {
   const computedPosts = useComputed$(() => {
     return props.data.slice((props.pageNo.value * props.postPerPage.value),
       ((props.pageNo.value * props.postPerPage.value)
-        + parseInt(props.postPerPage.value)))
+        + parseInt(props.postPerPage.value.toString())))
   })
 
-  console.log(props.data, 'incom')
-
-  const isImage = (url: string) => {
-    return /\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url);
-  }
+  /* Todo: removing this console.log results in a bug(searching and sorting simontaneously) */
+  console.log(props.data.length);
 
   return (
     <tbody>
-      {computedPosts.value.map((cell) => {
+      {computedPosts.value.map((cell: cellType) => {
         const keys = Object.keys(cell);
         return (
           <tr key={cell[keys[0]]}>
-            {keys.map((item) => {
+            {keys.map((item, i) => {
               if (isImage(cell[item])) {
-                return <td><img width={50} height={50} src={cell[item]} /></td>
+                const imgSrc = cell[item] as string;
+                return (
+                  <td key={i}>
+                    <img width={50} height={50} src={imgSrc} />
+                  </td>)
               } else {
-                return <td>{cell[item]}</td>
+                return <td key={i}>{cell[item]}</td>
               }
             })}
           </tr>
