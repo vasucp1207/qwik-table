@@ -1,4 +1,6 @@
-# Qwik Table
+![q-table](https://github.com/vasucp1207/qwik-table/assets/85363195/c318d71b-12cd-427c-bbd4-8db03cd1e543)
+
+<h1 align='center'>Qwik Table</h1>
 
 ## 📦Install
 ``npm i qwik-table``
@@ -36,4 +38,4 @@ export default component$(() => {
 });
 ```
 
-See the live demo.
+See the live [demo](https://qwik-table.vercel.app/).
