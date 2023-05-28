@@ -47,17 +47,17 @@ export const AppCSS = `
     padding-right: 10px;
   }
   .search-inp:focus {
-    outline: 2px solid #94a2b8;
+    outline: 2px solid #19b6f6;
   }
   select {
     outline: none;
     margin-left: 10px;
-    width: 130px;
+    width: 100px;
     height: 40px;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
   }
   select:focus {
-    outline: 2px solid #94a2b8;
+    outline: 2px solid #19b6f6;
   }
 `;

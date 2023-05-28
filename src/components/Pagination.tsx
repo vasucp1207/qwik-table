@@ -87,7 +87,7 @@ export const AppCSS = `
     border-radius: 8px;
   }
   select:focus {
-    outline: 2px solid #94a2b8;
+    outline: 2px solid #19b6f6;
   }
   .select-page>input {
     outline: none;
@@ -98,7 +98,10 @@ export const AppCSS = `
     font-size: 14px;
   }
   .select-page>input:focus {
-    outline: 2px solid #94a2b8;
+    outline: 2px solid #19b6f6;
+  }
+  .btn-cont>button:focus {
+    outline: 2px solid #19b6f6;
   }
   .page-cont {
     display: flex;
